@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Category, type: :model do
   describe 'validates' do
-    subject { FactoryBot.build :category }
+    before(:each) do
+      @user = User.create(name: 'John', email: 'jo@exa.com', password: 'password', password_confirmation: 'password')
+    end
+    subject { Category.new(name: 'Mack Donals', icon: 'fa fa-fa', user_id: @user.id) }
 
     it 'should have a name' do
       subject.name = nil
@@ -22,24 +25,6 @@ RSpec.describe Category, type: :model do
     it 'should have an icon' do
       subject.icon = nil
       expect(subject).to_not be_valid
-    end
-  end
-
-  describe 'association' do
-    context 'belong-to user' do
-      subject { FactoryBot.build :category }
-
-      it 'should have a user' do
-        expect(subject.user).to be_present
-      end
-    end
-
-    context 'has-many deals' do
-      subject { FactoryBot.build :category_with_deals, deals_count: 5 }
-
-      it 'should have deals' do
-        expect(subject.deals.length).to be 5
-      end
     end
   end
 end
