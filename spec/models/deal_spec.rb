@@ -2,7 +2,11 @@ require 'rails_helper'
 
 RSpec.describe Deal, type: :model do
   describe 'validates' do
-    subject { FactoryBot.build :deal }
+    before(:each) do
+      @user = User.create(name: 'John', email: 'jo@exa.com', password: 'password', password_confirmation: 'password')
+      @category = Category.create(name: 'Mack Donals', icon: 'fa fa-fa', user_id: @user.id)
+    end
+    subject { Deal.new(name: 'Payment', amount: 100, author_id: @user.id, category_ids: [@category.id]) }
 
     it 'should have a name' do
       subject.name = nil
@@ -27,24 +31,6 @@ RSpec.describe Deal, type: :model do
     it 'should have an amount greater than 0' do
       subject.amount = 0
       expect(subject).to_not be_valid
-    end
-  end
-
-  describe 'association' do
-    context 'belong-to author' do
-      subject { FactoryBot.build :deal }
-
-      it 'should have an author' do
-        expect(subject.author).to be_present
-      end
-    end
-
-    context 'has-many categories' do
-      subject { FactoryBot.build :deal_with_categories, categories_count: 5 }
-
-      it 'should have deals' do
-        expect(subject.categories.length).to be 5
-      end
     end
   end
 end
