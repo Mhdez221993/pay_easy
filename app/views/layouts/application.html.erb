@@ -5,12 +5,24 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+      rel="stylesheet">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body>
-    <%= yield %>
+    <div class="is-flex flex-grow-1 flex-direction-column">
+      <%= yield %>
+    </div>
+    <% if notice.present? %>
+      <div class="has-background-color-dark">
+        <p class="notice p-4 fw-regular"><%= notice %></p>
+      </div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="has-background-color-dark">
+        <p class="alert p-4 fw-regular"><%= alert %></p>
+      </div>
+    <% end %>
   </body>
 </html>
